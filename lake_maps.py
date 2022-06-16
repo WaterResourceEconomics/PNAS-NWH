@@ -266,55 +266,6 @@ create_plot(type='box', filename=box_output,
 create_plot(type='violin', filename=violin_output,
             title=None)
 
-##########################################################################################################
-# box and whisker plot of results [impairment]
-########################################################################################################
-imp_result_folder = 'G:/My Drive/NRRI/Zillow Project/Water Quality Hedonic/Water_Data/WIPV_Results_combined'
-imp_results = pd.read_excel(os.path.join(imp_result_folder, 'WIPV_2021_10_27.xlsx'),
-                        sheet_name='box_plot', usecols=[0,1,2,3])
-
-imp_results = imp_results.reset_index()
-imp_results_long = pd.melt(imp_results, id_vars='model', value_vars=['lake_shore', 'post_impair',
-                                                             'post_impair x lake_shore'])
-def create_plot_updated(results_long, type='box', filename=None, title=None, resolution=1200):
-    fig, ax1 = plt.subplots(ncols=1, figsize=(6, 7))
-    if type == 'box':
-        sns.boxplot(data=results_long,  whis=np.inf, y='value', x='variable', ax=ax1)
-    else:
-        sns.violinplot(data=results_long,y='value', x='variable', linewidth=0, alpha= '0.2', ax=ax1)
-    ax1 = sns.stripplot(x="variable", y="value", data=results_long, color=".3")
-    sns.stripplot(data=results_long[results_long.model=='base_case_all'], x= 'variable', y='value', color='red')
-    ax1.axhline(0, linestyle='--', color='black')
-    base = results_long[results_long.model=='base_case_all'].reset_index().value
-    # base = results_long.groupby(['variable'])['value'].median()
-    vertical_offset = results_long['value'].median() * 0.8 # offset from median for display
-
-    for xtick in ax1.get_xticks():
-        ax1.text(xtick,base[xtick] + vertical_offset,base[xtick],
-                 horizontalalignment='center',size='x-small',color='r',weight='semibold')
-
-    if title:
-        ax1.set_title(title, fontdict={'fontsize': '12', 'fontweight' : '1'})
-    # create an annotation for the data source
-    # ax1.annotate('The red dots (and labels) indicate results from main model', xy=(0.1, 0.03),
-    #              xycoords='figure fraction', horizontalalignment='left',
-    #              verticalalignment='top', fontsize=8, color='#555555')
-
-    ax1.set_xlabel('', fontsize = 8)
-    ax1.set_ylabel('coefficient', fontsize = 10)
-
-    plt.xticks([0,1,2],['LakeShore (0-150m)','PostImpair','LakeShore x \nPostImpair'], fontsize = 8, rotation=0)
-    plt.xticks(fontsize = 8)
-    fig.tight_layout()
-    if filename:
-        fig.savefig(filename, dpi=resolution)
-    plt.close('all')
-
-output_folder = "G:/My Drive/NRRI/Zillow Project/Water Quality Hedonic/Water_Data/ATTAINS/attains_geojson"
-violin_output = os.path.join(output_folder, 'violin_plot.png')
-create_plot_updated(results_long=imp_results_long,type='violin', filename=violin_output,
-            title=None)
-
 ########################################################################################################
 # NLA Lakes
 nla2012_lakes = gpd.read_file(os.path.join(output_folder, 'NLA2012_lakes.shp'))
