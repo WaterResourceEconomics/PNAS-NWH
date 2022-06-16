@@ -73,11 +73,6 @@ for col in col_maps.keys():
     ax.set_title(f'{col_maps[col]},\n n = {len(lake_point)}', fontdict={'fontsize': '15', 'fontweight' : '2'})
     # remove the axis
     ax.axis('off')
-
-    # fig= plt.figure(figsize=(8,6))
-    # ax = lake_point.plot(alpha=0.5, edgecolor='k')
-    # cx.add_basemap(ax)
-    # ax.set_axis_off()
     fig.savefig(os.path.join(output_folder, f'{col}.png'), dpi=600)
     # fig.savefig(os.path.join(output_folder, f'{col}_no_title.png'), dpi=600)
     plt.close('all')
@@ -95,11 +90,6 @@ for col in lake_output.columns:
     folium.GeoJson(data=lake_point["geometry"]).add_to(map)
 
     map.save(os.path.join(output_folder, f'2{col}.html'))
-    #
-    # img_data = map._to_png(5)
-    # img = Image.open(io.BytesIO(img_data))
-    # img.save(os.path.join(output_folder, f'2{col}.png'))
-
 ##################################################################################
 # get water quality maps by tract id
 tract_boundary = gpd.read_file(os.path.join(output_folder, 'cb_conus_tarct.shp'))
@@ -182,9 +172,6 @@ def plot_wq_by_bin(gdf, vname, bins, color=None, title = None, filename=None, re
     # add a title
     if title !=None:
         ax.set_title(title, fontdict={'fontsize': '15', 'fontweight' : '2'})
-    # create an annotation for the data source
-    #ax.annotate(‘Source: London Datastore, 2014’,xy=(0.1, .08),  xycoords=’figure fraction’, horizontalalignment=’left’, verticalalignment=’top’, fontsize=12, color=’#555555')
-    # plt.legend(bbox_to_anchor=(1.05, 1.0), loc='upper right')
     plt.tight_layout()
     if filename:
         fig.savefig(filename, dpi=resolution)
@@ -243,11 +230,6 @@ def create_plot(type='box', filename=None, title=None, resolution=1200):
 
     if title:
         ax1.set_title(title, fontdict={'fontsize': '12', 'fontweight' : '1'})
-    # create an annotation for the data source
-    # ax1.annotate('The red dots (and labels) indicate results from main model', xy=(0.1, 0.03),
-    #              xycoords='figure fraction', horizontalalignment='left',
-    #              verticalalignment='top', fontsize=8, color='#555555')
-
     ax1.set_xlabel('', fontsize = 8)
     ax1.set_ylabel('coefficient', fontsize = 10)
 
